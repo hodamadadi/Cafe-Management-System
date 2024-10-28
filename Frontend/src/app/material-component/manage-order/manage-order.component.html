@@ -1,0 +1,250 @@
+<!-- First Mat-Card: Submit Action and Title -->
+<mat-card>
+  <div class="header-container">
+    <b><span style="font-size: 1.1rem">Manage Order</span></b>
+    <button
+      mat-flat-button
+      [disabled]="validateSubmit()"
+      (click)="submitAction()"
+      class="add-order-btn"
+      style="background-color: #ff7d29; color: white; width: 20%"
+    >
+      Submit & Get Bill
+    </button>
+  </div>
+</mat-card>
+
+<hr />
+
+<!-- Second Mat-Card: Customer Details Form -->
+<mat-card>
+  <b><span>Customer Details:</span></b>
+  <form [formGroup]="manageOrderForm">
+    <div fxFlex fxLayout="column">
+      <div fxLayout="row wrap">
+        <!-- Name Field -->
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label>Name</mat-label>
+          <input matInput formControlName="name" required />
+          <mat-error
+            *ngIf="
+              manageOrderForm.controls.name.touched &&
+              manageOrderForm.controls.name.invalid
+            "
+          >
+            <span *ngIf="manageOrderForm.controls.name.errors?.required"
+              >This field is mandatory.</span
+            >
+            <span *ngIf="manageOrderForm.controls.name.errors?.pattern"
+              >This field is invalid.</span
+            >
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email Field -->
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required />
+          <mat-error
+            *ngIf="
+              manageOrderForm.controls.email.touched &&
+              manageOrderForm.controls.email.invalid
+            "
+          >
+            <span *ngIf="manageOrderForm.controls.email.errors?.required"
+              >This field is mandatory.</span
+            >
+            <span *ngIf="manageOrderForm.controls.email.errors?.pattern"
+              >This field is invalid.</span
+            >
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Contact Number Field -->
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label>Contact Number</mat-label>
+          <input matInput formControlName="contactNumber" required />
+          <mat-error
+            *ngIf="
+              manageOrderForm.controls.contactNumber.touched &&
+              manageOrderForm.controls.contactNumber.invalid
+            "
+          >
+            <span
+              *ngIf="manageOrderForm.controls.contactNumber.errors?.required"
+              >This field is mandatory.</span
+            >
+            <span *ngIf="manageOrderForm.controls.contactNumber.errors?.pattern"
+              >This field is invalid.</span
+            >
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Payment Method Field -->
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label>Payment Method</mat-label>
+          <mat-select formControlName="paymentMethod" required>
+            <mat-option value="Cash">Cash</mat-option>
+            <mat-option value="Credit Card">Credit Card</mat-option>
+            <mat-option value="Debit Card">Debit Card</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="
+              manageOrderForm.controls.paymentMethod.touched &&
+              manageOrderForm.controls.paymentMethod.invalid
+            "
+          >
+            <span
+              *ngIf="manageOrderForm.controls.paymentMethod.errors?.required"
+              >This field is mandatory.</span
+            >
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</mat-card>
+
+<hr />
+
+<!-- Third Mat-Card: Select Product -->
+<mat-card>
+  <b><span>Select Product:</span></b>
+  <form [formGroup]="manageOrderForm">
+    <div fxFlex fxLayout="column">
+      <div fxLayout="row wrap">
+        <!-- Category Field -->
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label>Category</mat-label>
+          <mat-select
+            formControlName="category"
+            (selectionChange)="getProductsByCategory($event.value)"
+          >
+            <mat-option
+              *ngFor="let category of categories"
+              [value]="category.id"
+              >{{ category.name }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Product Field -->
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label>Product</mat-label>
+          <mat-select
+            formControlName="product"
+            (selectionChange)="getProductDetails($event.value)"
+          >
+            <mat-option *ngFor="let product of products" [value]="product.id">{{
+              product.name
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- Price Field (Read-only) -->
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label>Price</mat-label>
+          <input matInput formControlName="price" required readonly />
+        </mat-form-field>
+
+        <!-- Quantity Field -->
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label>Quantity</mat-label>
+          <input
+            matInput
+            formControlName="quantity"
+            required
+            (keyup)="setQuantity($event)"
+          />
+        </mat-form-field>
+
+        <!-- Total Field (Read-only) -->
+        <mat-form-field appearance="fill" fxFlex>
+          <mat-label>Total</mat-label>
+          <input matInput formControlName="total" required readonly />
+        </mat-form-field>
+      </div>
+
+      <!-- Buttons for Adding Product and Displaying Total Amount -->
+      <button
+        mat-flat-button
+        style="background-color: #ff7d29; color: white"
+        [disabled]="validateProductAdd()"
+      >
+        Add
+      </button>
+      <button
+        mat-flat-button
+        style="background-color: #ff7d29; color: white; margin-top: 0.7rem"
+        class="float-right"
+      >
+        Total Amount: {{ totalAmount }}
+      </button>
+    </div>
+  </form>
+</mat-card>
+
+<hr />
+
+<!-- Responsive Table for Displaying Products -->
+<div class="responsive_table">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Category Column -->
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>Category</th>
+      <td mat-cell *matCellDef="let element">{{ element.category }}</td>
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef>Price</th>
+      <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+    </ng-container>
+
+    <!-- Quantity Column -->
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef>Quantity</th>
+      <td mat-cell *matCellDef="let element">{{ element.quantity }}</td>
+    </ng-container>
+
+    <!-- Total Column -->
+    <ng-container matColumnDef="total">
+      <th mat-header-cell *matHeaderCellDef>Total</th>
+      <td mat-cell *matCellDef="let element">{{ element.total }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>Edit</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="onEdit(element)">
+          <mat-icon>edit</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Delete Column -->
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef>Delete</th>
+      <td mat-cell *matCellDef="let element; let i = index">
+        <button
+          mat-icon-button
+          color="primary"
+          matTooltip="Delete"
+          (click)="handleDeleteAction(i, element)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <!-- Row Definitions -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

@@ -1,0 +1,47 @@
+.float-right {
+  float: right;
+}
+
+mat-card {
+  padding: 20px 30px;
+  margin: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.add-product-btn {
+  margin-left: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.action-link {
+  display: flex;
+  gap: 10px;
+}
+
+.mat-slide-toggle {
+  margin-left: 10px;
+}
+
+table th,
+table td {
+  padding: 16px;
+  text-align: left;
+  font-size: 14px;
+}
+.responsive_table {
+  width: 96%;
+  text-align: center;
+  padding: 20px 30px;
+  border-radius: 8px;
+  margin: center auto;
+}

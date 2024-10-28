@@ -1,0 +1,41 @@
+mat-card {
+  padding: 20px 30px;
+  margin: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 5px 12px rgba(0, 0, 0, 0.1);
+}
+table {
+  width: 100%;
+}
+.span {
+  padding: 30px;
+  font-size: 17px;
+}
+table th,
+table td {
+  padding: 16px;
+  text-align: left;
+  font-size: 14px;
+}
+
+table th {
+  background-color: #f5f5f5;
+  font-weight: bold;
+}
+
+/* Elevation and row styling */
+.mat-elevation-z8 {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.action-link {
+  display: flex;
+  justify-content: center;
+}
+.responsive_table {
+  width: 96%;
+  text-align: center;
+  padding: 20px 30px;
+  border-radius: 8px;
+  margin: center auto;
+}

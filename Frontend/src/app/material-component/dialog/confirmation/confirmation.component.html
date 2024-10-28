@@ -1,0 +1,23 @@
+<mat-dialog-content class="mat-typography">
+  <h5>Are you sure you want to {{ details.message }}?</h5>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <!-- Correct event binding syntax -->
+  <button
+    mat-raised-button
+    style="background-color: #FF7D29; color: white"
+    (click)="handleChangeAction()"
+    class="button"
+  >
+    Yes
+  </button>
+  <button
+    mat-raised-button
+    mat-dialog-close
+    class="button"
+    style="background-color: #FF7D29; color: white"
+  >
+    No
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,59 @@
+$red: #ff7d29;
+
+.mat-toolbar {
+  // margin: -24px; /* Adjusted toolbar margin */
+  width: 100%;
+  margin-bottom: 10px;
+  background-color: darken(#ff7d29, 10%);
+}
+
+.title-center {
+  flex: 1 1 auto;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  // color: white;
+}
+
+mat-form-field {
+  width: 100%; /* Full width for form fields */
+  margin: 10px 0; /* Vertical spacing between fields */
+  padding: 5px;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.9
+  ); /* Slight background for form fields */
+  border-radius: 4px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+mat-error {
+  color: $red; /* Color for error messages */
+}
+
+.button {
+  background-color: $red;
+  color: white; /* Ensure text is readable */
+  padding: 10px 20px; /* Added padding for better touch targets */
+  border: none; /* Remove border */
+  border-radius: 4px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition */
+
+  margin-bottom: 1rem;
+  &:hover {
+    background-color: lighten($red, 10%); /* Lighter shade on hover */
+  }
+
+  &:disabled {
+    background-color: lighten($red, 20%); /* Lighter shade when disabled */
+    cursor: not-allowed; /* Change cursor to indicate disabled state */
+  }
+}
+
+.mat-dialog-content {
+  padding: 20px; /* Extra padding for dialog content */
+  background-color: #f9f9f9; /* Light background for content area */
+  border-radius: 8px; /* Rounded corners */
+}

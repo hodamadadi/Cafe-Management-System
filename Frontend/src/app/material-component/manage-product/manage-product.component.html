@@ -1,0 +1,113 @@
+<mat-card class="card-header">
+  <div class="header-container">
+    <b
+      ><span style="font-size: 1.1rem">
+        <mat-icon>shopping_cart</mat-icon> Manage Product</span
+      ></b
+    >
+    <button
+      mat-flat-button
+      class="add-product-btn"
+      (click)="handleAddAction()"
+      style="background-color: #ff7d29; color: white"
+    >
+      Add Product
+    </button>
+  </div>
+</mat-card>
+<hr />
+<mat-card>
+  <mat-form-field appearance="fill">
+    <mat-label>Filter </mat-label>
+    <input matInput (keyup)="applyFilter($event)" #input />
+  </mat-form-field>
+</mat-card>
+<hr />
+<div class="responsive_table">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        style="background-color: #ff7d29; color: white"
+      >
+        Name
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    </ng-container>
+
+    <!-- Category Column -->
+    <ng-container matColumnDef="categoryName">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        style="background-color: #ff7d29; color: white"
+      >
+        Category
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.categoryName }}</td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        style="background-color: #ff7d29; color: white"
+      >
+        Description
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.description }}</td>
+    </ng-container>
+
+    <!-- Price Column -->
+    <ng-container matColumnDef="price">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        style="background-color: #ff7d29; color: white"
+      >
+        Price
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.price }}</td>
+    </ng-container>
+
+    <!-- Actions Column -->
+    <ng-container matColumnDef="edit">
+      <th
+        mat-header-cell
+        *matHeaderCellDef
+        style="background-color: #ff7d29; color: white"
+      >
+        Action
+      </th>
+      <td mat-cell *matCellDef="let element" class="action-link">
+        <button
+          mat-icon-button
+          matTooltip="Edit"
+          (click)="handleEditAction(element)"
+        >
+          <mat-icon style="color: #ff7d29">edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          matTooltip="Delete"
+          (click)="handleDeleteAction(element)"
+        >
+          <mat-icon style="color: #ff7d29">delete</mat-icon>
+        </button>
+        <mat-slide-toggle
+          (change)="onChange($event.checked, element.id)"
+          matTooltip="Activate/Deactivate Product"
+          [checked]="element.status"
+          style="color: #ff7d29; padding-top: 12px"
+        ></mat-slide-toggle>
+      </td>
+    </ng-container>
+
+    <!-- Table Headers and Rows -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
