@@ -1,0 +1,53 @@
+$red: #FF7D29;
+.login-dialog-content {
+  padding: 20px;
+}
+
+.form-container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+// Toolbar row style
+.toolbar-row {
+  justify-content: center;
+}
+
+.title-center {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #fff;
+  background-color: $red;
+}
+
+.toolbar-row{
+  background-color: $red;
+}
+// Form field styles
+.form-field {
+  width: 100%;
+}
+
+mat-form-field {
+  font-size: 1rem;
+}
+
+// Dialog actions
+.dialog-actions {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+.submit-button {
+  color: white;
+}
+.button{
+  background-color: #FF7D29;
+  margin-bottom: 0.3rem;
+}
+
+.close-button {
+  margin-left: 10px;
+}
