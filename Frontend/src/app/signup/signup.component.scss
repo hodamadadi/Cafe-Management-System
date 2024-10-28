@@ -1,0 +1,52 @@
+
+$red: #FF7D29;
+
+.title-center {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+ 
+}
+.signup-toolbar{
+  background-color: $red;
+}
+
+mat-dialog-content {
+  padding: 20px; 
+}
+.custom-button {
+  background-color:#FF7D29;
+  color: white;
+  margin-bottom: 0.8rem;
+
+  &:hover {
+    background-color: darken($red, 10%); 
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(193, 110, 8, 0.782); 
+  }
+}// Variables
+$red: #FF7D29;
+
+mat-form-field {
+  width: 100%;
+}
+.custom-button {
+  background-color: $red;
+  color: white;
+
+  &:hover {
+    background-color: darken($red, 10%);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px $red;
+  }
+}
+mat-form-field {
+  margin-bottom: 20px;
+}

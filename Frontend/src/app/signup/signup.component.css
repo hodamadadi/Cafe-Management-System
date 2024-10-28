@@ -1,0 +1,54 @@
+.signup-toolbar {
+  background-color: #fb3a3a;
+  color: black;
+}
+
+.title-center {
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-align: center;
+  flex: 1;
+}
+
+mat-dialog-content {
+  background-color: #fb3a3a;
+  color: white;
+  padding: 20px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+mat-form-field {
+  width: 100%;
+  background-color: white;
+  border-radius: 5px;
+}
+
+mat-dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.custom-button {
+  background-color: #fb3a3a;
+  color: white;
+  margin: 0 5px;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.custom-button:hover {
+  background-color: #e02929;
+}
+
+/* .custom-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px #ff4081;
+} */
