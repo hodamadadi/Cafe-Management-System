@@ -1,0 +1,42 @@
+<div class="main-container">
+  <mat-toolbar
+    style="background-color: #ff7d29; color: white"
+    class="topbar relative"
+  >
+    <div class="navbar-header">
+      <button
+        mat-icon-button
+        (click)="snav.toggle()"
+        aria-label="Toggle sidebar"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <b>
+        <mat-icon>storefront</mat-icon>
+      </b>
+      <span class="title"> Cafe Management System</span>
+    </div>
+    <span fxFlex></span>
+    <app-header></app-header>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-sidenav-container">
+    <mat-sidenav
+      #snav
+      id="snav"
+      class="dark-sidebar pl-xs"
+      [mode]="mobileQuery.matches ? 'side' : 'over'"
+      fixedTopGap="0"
+      [opened]="mobileQuery.matches"
+      [disableClose]="mobileQuery.matches"
+    >
+      <app-sidebar></app-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content class="page-wrapper">
+      <div class="page-content">
+        <router-outlet></router-outlet>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

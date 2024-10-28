@@ -1,0 +1,193 @@
+<div class="bg-image"></div>
+<app-best-seller></app-best-seller>
+<div class="text-overlay">
+  <h1>Welcome to <span style="color: #ff7d29">Madadi </span>Cafe</h1>
+  <h2 class="title">
+    Always Fresh & Hot <mat-icon class="icon">coffee</mat-icon>
+  </h2>
+  <svg width="47%" height="20" viewBox="0 0 100 40" preserveAspectRatio="none">
+    <path
+      d="M0 20 C 20 0, 40 0, 60 20 C 80 40, 100 40, 100 20"
+      stroke="#ff7d29"
+      stroke-width="4"
+      fill="transparent"
+    />
+  </svg>
+  <p style="font-family: cursive">
+    Discover the finest coffee in town at our cozy café! Relax with a cup of
+    freshly brewed coffee made from high-quality beans, paired with our
+    delicious homemade treats.Whether you're reading or catching up with
+    friends, our café is the perfect spot for
+    <span style="color: #ff7d29">coffee lovers</span>.
+    <b><mat-icon>favorite_border</mat-icon></b> Experience the warmth and flavor
+    that make us a beloved local gem!
+  </p>
+  <!-- <img
+    src="../../assets/img/co4.jpg"
+    style="
+      width: 130px;
+      height: 130px;
+      border-radius: 100%;
+      display: flex;
+      float: left;
+      margin-left: 15%;
+  
+    "
+    alt=""
+  /> -->
+</div>
+<div class="wrapper sticky">
+  <nav class="navbar-fixed-top">
+    <a href="#" class="logo">
+      <div style="display: inline-block">
+        <mat-icon
+          class="icon"
+          style="
+            border: 2px solid #d76f08;
+            color: #ff7d29;
+            background-color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            display: flex;
+          "
+          >storefront</mat-icon
+        >
+      </div>
+      Madadi Cafe Management System
+    </a>
+    <ul>
+      <li>
+        <a (click)="loginAction()" class="btn login-btn">
+          <mat-icon>login</mat-icon> Login</a
+        >
+      </li>
+      <li>
+        <a (click)="signupAction()" class="btn signup-btn">
+          <mat-icon>person_add</mat-icon> Signup</a
+        >
+      </li>
+      <!-- <li><a (click)="forgotPasswordAction()">Forgot Password?</a></li> -->
+    </ul>
+  </nav>
+</div>
+
+<!-- Footer Section -->
+<footer class="footer">
+  <div class="footer-content">
+    <h3 class="footer-title">Follow Us</h3>
+    <div class="footer-social">
+      <a
+        href="https://www.facebook.com/Hoda846"
+        class="social-icons"
+        target="_blank"
+        aria-label="Facebook"
+      >
+        <mat-icon class="social-icons">facebook</mat-icon>
+      </a>
+      <a
+        href="https://www.instagram.com/hoda.ldy/"
+        target="_blank"
+        class="social-icons"
+        aria-label="Instagram"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.5a4.5 4.5 0 1 0-9 0 4.5 4.5 0 0 0 9 0z"></path>
+          <circle cx="17" cy="7" r="1"></circle>
+        </svg>
+      </a>
+    </div>
+    <p class="footer-text">&copy; 2024 Hoda Madadi. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- Font Awesome for Social Media Icons -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+/>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Allura&family=Mansalva&family=Playwrite+FR+Moderne:wght@100..400&family=Qwigley&family=Reggae+One&family=Sacramento&family=Satisfy&family=Shantell+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+  rel="stylesheet"
+/>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<style>
+  .footer {
+    background-color: #ff7d29;
+    color: #1a1a1a;
+    padding: 1.5rem 0;
+    text-align: center;
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+      sans-serif;
+  }
+
+  .footer-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .footer-title {
+    font-size: 1.2rem;
+    color: #1a1a1a;
+    letter-spacing: 1px;
+    margin-bottom: 0;
+    text-transform: uppercase;
+  }
+
+  .footer-social {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .social-icons {
+    font-size: 1.6rem;
+    color: #1a1a1a;
+    padding: 0.7rem;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: color 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    outline: none;
+  }
+
+  .social-icons:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1) rotate(5deg);
+    text-decoration: none;
+  }
+
+  .footer-text {
+    font-size: 0.9rem;
+    color: #1a1a1a;
+    margin-top: 0.5rem;
+    border-top: 1px solid #1a1a1a;
+    padding-top: 1rem;
+    width: 100%;
+    max-width: 600px;
+  }
+</style>
