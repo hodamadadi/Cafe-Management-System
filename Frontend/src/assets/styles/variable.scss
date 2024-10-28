@@ -1,0 +1,74 @@
+// Variables
+$bodyfont: "Poppins", sans-serif;
+$headingfont: "Poppins", sans-serif;
+// @import "@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "~@angular/material/theming";
+
+// Material Theme Colors
+$primary: mat-palette($mat-orange, 600); // Primary color red
+$accent: mat-palette($mat-red, 500); // Accent color red
+$warn: mat-palette($mat-red, 700); // Warn color red
+$theme: mat-light-theme($primary, $accent, $warn);
+$background: map-get($theme, $background);
+$foreground: map-get($theme, foreground);
+
+$custom-typography: mat-typography-config(
+  $font-family: "Poppins, sans-serif",
+);
+
+// Override the typography in the core CSS.
+@include mat-core($custom-typography);
+
+// Default Theme
+@include angular-material-theme($theme);
+
+// Style for full width input fields
+mat-form-field {
+  width: 100%; // Make all input fields full width
+}
+
+// Custom button styles
+.button-custom {
+  background-color: $primary; // Background color red
+  color: white;
+
+  &:hover {
+    background-color: darken($primary, 10%); // Darken on hover
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px $warn; // Red focus color
+  }
+}
+
+// Apply button styles to raised buttons
+mat-raised-button {
+  @extend .button-custom;
+}
+
+// Other styles
+// $topbar: #2196f3;
+$sidebar: #fff;
+$bodycolor: #eef5f9;
+$headingtext: #455a64;
+$bodytext: #67757c;
+
+// Additional color variables
+$danger: #fc4b6c;
+$success: #26c6da;
+$warning: #ffb22b;
+$light-danger: #f9e7eb;
+$light-success: #e8fdf8;
+$light-warning: #fff8ec;
+$inverse: white;
+$primary: #FF7D29;
+$red: #f1711b;
+
+// Styling for custom dialog
+.custom-dialog {
+  padding: 20px;
+  background-color: #ffe5e5;
+  border-radius: 12px;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
