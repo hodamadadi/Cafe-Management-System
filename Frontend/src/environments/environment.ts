@@ -1,5 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://cafe-management-system-r92v.onrender.com/',
+  apiUrl: 'https://coffeapinode-production.up.railway.app/',
   // apiUrl: 'http://localhost:7000'
 };
