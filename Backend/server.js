@@ -1,3 +1,4 @@
+
 // Import required modules
 const express = require("express");
 const bodyParser = require("body-parser");
@@ -22,8 +23,13 @@ const app = express();
 const port = process.env.PORT || 7000;
 
 // CORS configuration
+const allowedOrigins = [
+  "http://localhost:4200",
+  "https://cafe-management-system-mauve.vercel.app",
+];
+
 const corsOptions = {
-  origin: "http://localhost:4200", // Replace with your frontend's URL
+  origin: allowedOrigins, // Allow both local and deployed origins
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true, // Allow credentials (if needed)
   optionsSuccessStatus: 204,
