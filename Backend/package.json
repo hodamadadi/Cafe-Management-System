@@ -2,20 +2,15 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "Cafe System Management",
-  "main": "index.js",
+  "main": "server.js", // Change this to server.js
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js"
+    "start": "node server.js", // Production start command
+    "dev": "nodemon server.js" // Development command
   },
-  "author": "Hoda Mdadai",
+  "author": "Hoda Madadi",
   "license": "ISC",
   "dependencies": {
-    "@angular/animations": "^18.2.7",
-    "@angular/cdk": "^18.2.6",
-    "@angular/material": "^18.2.6",
-    "array-flatten": "^3.0.0",
     "bcrypt": "^5.1.1",
-    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
