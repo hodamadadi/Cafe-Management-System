@@ -15,12 +15,14 @@ const dashboardRoute = require("./routes/dashboard");
 const orderRoute = require("./routes/order"); // Import your order route
 const transporter = require("./miler");
 
+
 // Load environment variables
 dotenv.config();
 
 // Create an instance of express
 const app = express();
 const port = process.env.PORT || 7000;
+const helmet = require('helmet');
 
 // CORS configuration
 const allowedOrigins = [
@@ -59,6 +61,20 @@ app.use((err, req, res, next) => {
 app.use((req, res, next) => {
   res.setHeader("Content-Security-Policy", "connect-src 'self' https://cafe-management-system-r92v.onrender.com");
   next();
+});
+
+
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    connectSrc: ["'self'", "http://localhost:7000", "https://cafe-management-system-r92v.onrender.com"]
+  }
+}));
+
+// Your other middleware and routes
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
 
 // Create HTTP server
