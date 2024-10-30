@@ -4,5 +4,7 @@
 // };
 export const environment = {
   production: false,
-  backendUrl: 'https://cafe-management-system-1.onrender.com',
+  backendUrl: 'http://localhost:7000',
+  apiUrl: 'http://localhost:7000', // Add this line if it doesn't exist
 };
+
