@@ -6,5 +6,5 @@
 // };
 export const environment = {
   production: true,
-  apiUrl: 'https://coffeapinode-production.up.railway.app/'
+  apiUrl: 'https://coffeapinode-production.up.railway.app'
 };
