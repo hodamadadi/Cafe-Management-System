@@ -19,6 +19,11 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(registrations => {
+        registrations.forEach(registration => registration.unregister());
+      });
+    }
   }
 
   ngOnDestroy(): void {
