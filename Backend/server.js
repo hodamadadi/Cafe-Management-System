@@ -61,7 +61,7 @@ app.use((err, req, res, next) => {
 app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ["'self'"],
-    connectSrc: ["'self'", "http://localhost:7000", "https://cafe-management-system-r92v.onrender.com"]
+    connectSrc: ["'self'", "https://cafe-management-system-mauve.vercel.app/"]
   }
 }));
 
