@@ -7,7 +7,7 @@ import { environment } from '../../environments/environment';
 })
 export class UserService {
   url = environment.apiUrl;
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
   signup(data: any) {
     return this.httpClient.post(this.url + '/user/signup', data, {
       headers: new HttpHeaders().set('content-Type', 'application/json'),

@@ -1,36 +1,64 @@
-const mysql = require("mysql2/promise");
-const dotenv = require("dotenv");
+const sqlite3 = require("sqlite3").verbose();
 
-dotenv.config();
-
-// Create a connection pool
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USERNAME || "root",
-  password: process.env.DB_PASSWORD || "",
-  database: process.env.DB_NAME || "cafenodejs",
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
+// Create an in-memory SQLite database
+const db = new sqlite3.Database(':memory:', (err) => {
+  if (err) {
+    console.error("Error connecting to the in-memory database:", err);
+  } else {
+    console.log("Connected to the in-memory SQLite database!");
+  }
 });
 
-// Function to test the database connection
-async function testConnection() {
-  let connection;
-  try {
-    connection = await pool.getConnection();
-    console.log("Connected to the database!");
-  } catch (error) {
-    console.error("Error connecting to the database:", error);
-  } finally {
-    if (connection) {
-      connection.release(); // Release the connection back to the pool
-    }
-  }
+// Function to set up database schema and initial data
+function initializeDatabase() {
+  db.serialize(() => {
+    // Create tables
+    db.run(`CREATE TABLE user (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        contactNumber TEXT,
+        email TEXT UNIQUE,
+        password TEXT,
+        status BOOLEAN DEFAULT FALSE,
+        role TEXT
+    )`);
+
+    db.run(`CREATE TABLE category (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+    )`);
+
+    db.run(`CREATE TABLE product (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        categoryId INTEGER NOT NULL,
+        description TEXT,
+        price INTEGER,
+        status TEXT,
+        FOREIGN KEY (categoryId) REFERENCES category(id)
+    )`);
+
+    db.run(`CREATE TABLE bill (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        uuid TEXT NOT NULL,
+        name TEXT NOT NULL,
+        email TEXT NOT NULL,
+        contactNumber TEXT NOT NULL,
+        paymentMethod TEXT NOT NULL,
+        total REAL NOT NULL,
+        productDetails TEXT, -- JSON is stored as TEXT in SQLite
+        createdBy TEXT NOT NULL
+    )`);
+
+    // Insert initial data
+    db.run(`INSERT INTO user (name, contactNumber, email, password, status, role)
+            VALUES ('admin', '0731062846', 'hodamadadi5@gmail.com', '12345678', 1, 'admin')`);
+
+    console.log("Database initialized with tables and initial data.");
+  });
 }
 
-// Test the connection on startup
-testConnection();
+// Initialize the database on startup
+initializeDatabase();
 
-// Export the pool for use in other parts of the application
-module.exports = pool;
+module.exports = db;

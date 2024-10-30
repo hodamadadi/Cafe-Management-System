@@ -1,10 +1,14 @@
 const express = require("express");
-const connection = require("../connection");
+const connection = require("../connection"); // Ensure this connects to your SQLite database
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const nodemailer = require("nodemailer");
+const { secret } = require("../services/authentication");
+
+console.log('secret ', secret);
+
 
 dotenv.config();
 const saltRounds = 10;
@@ -30,7 +34,7 @@ router.post("/signup", async (req, res) => {
 
   try {
     const query = "SELECT email FROM user WHERE email=?";
-    const [results] = await connection.query(query, [email]); // Awaiting the promise
+    const [results] = await connection.all(query, [email]); // Use connection.all for SQLite
 
     if (results.length > 0) {
       return res.status(400).json({ message: "Email already exists!" });
@@ -39,11 +43,11 @@ router.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const insertQuery =
       "INSERT INTO user (name, contactNumber, email, password, status, role) VALUES (?, ?, ?, ?, 'false', 'user')";
-    await connection.query(insertQuery, [
+    await connection.run(insertQuery, [
       name,
       contactNumber,
       email,
-      hashedPassword,
+      password,
     ]);
     res.status(200).json({ message: "Successfully registered!" });
   } catch (err) {
@@ -55,6 +59,8 @@ router.post("/signup", async (req, res) => {
 // Login route
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password);
+
 
   if (!email || !password) {
     return res.status(400).json({ message: "Email and password are required" });
@@ -63,11 +69,22 @@ router.post("/login", async (req, res) => {
   try {
     const query =
       "SELECT email, password, role, status FROM user WHERE email=?";
+    // Sample query
 
-    // Use the connection to execute the query
-    const [results] = await connection.query(query, [email]);
+    const results = await new Promise((resolve, reject) => {
+      connection.all(query, [email], (err, rows) => {
+        if (err) {
+          console.error(err);
+          return reject(err);
+        }
+        console.log('Rows:', rows);
+        resolve(rows); // Return rows directly here
+      });
+    });
 
-    if (results.length === 0) {
+    console.log('reuslts ,', results);
+
+    if (!results || results.length === 0) {
       return res
         .status(401)
         .json({ message: "Incorrect username or password" });
@@ -75,9 +92,13 @@ router.post("/login", async (req, res) => {
 
     const user = results[0];
 
-    // Compare the password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
+
+
+    // const isMatch = await bcrypt.compare(password, user.password);
+    // if (!isMatch) {
+    console.log('match pass: ', user.password == password);
+
+    if (user.password != password) {
       return res
         .status(401)
         .json({ message: "Incorrect username or password" });
@@ -88,7 +109,9 @@ router.post("/login", async (req, res) => {
     }
 
     const response = { email: user.email, role: user.role };
-    const accessToken = jwt.sign(response, process.env.ACCESS_TOKEN_SECRET, {
+    console.log('keys: ', response, process.env.ACCESS_TOKEN_SECRET);
+
+    const accessToken = jwt.sign(response, secret, {
       expiresIn: "8h",
     });
 
@@ -99,71 +122,26 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// //forget password
-// router.post("/forgotPassword", (req, res) => {
-//   const user = req.body;
-//   query = "select email, password from user where email=?";
-//   connection.query(query, [user.email], (err, results) => {
-//     if (!err) {
-//       if (results.length <= 0) {
-//         return res
-//           .status(200)
-//           .json({ message: "Please sent successfully to your email." });
-//       } else {
-//         var mailOptions = {
-//           form: process.env.Email,
-//           to: results[0].email,
-//           subject: "Password by Cafe Management System.",
-//           html:
-//             "<p> <b> Your Login details for Cafe Management System </b> <br> <b> Email: </b>" +
-//             results[0].email +
-//             "<br> <b> Password: </b>" +
-//             results[0].password +
-//             '<br><a href= "http://localhost:4200/">Click here to login </a> </p>',
-//         };
-//         // transporter.sendMail(mailOptions, function (error, info) {
-//         //   if (err) {
-//         //     console.log(error);
-//         //   } else {
-//         //     console.log("Email sent:" + info.response);
-//         //   }
-//         // });
-//         return results
-//           .results(200)
-//           .json({ message: "Password sent Successfully to your email." });
-//       }
-//     } else {
-//       return res.status(500).json(err);
-//     }
-//   });
-// });
+// Forgot Password route
 router.post("/forgotPassword", (req, res) => {
-  console.log("Request received:", req.body);
   const user = req.body;
 
-  // Check if email is provided in the request
   if (!user.email) {
-    console.log("Email is required."); // Log for missing email
     return res.status(400).json({ message: "Email is required." });
   }
 
-  // Database query to find the user by email
   const query = "SELECT email, password FROM user WHERE email=?";
-  connection.query(query, [user.email], (err, results) => {
+  connection.all(query, [user.email], (err, results) => {
     if (err) {
       console.error("Database query error:", err);
       return res.status(500).json({ message: "Database error occurred." });
     }
 
-    // Check if the user was found
     if (results.length <= 0) {
-      console.log("Email not found.");
       return res.status(404).json({ message: "Email not found." });
     } else {
-      console.log("User found, preparing to send email.");
-      // Email options
       const mailOptions = {
-        from: process.env.Email,
+        from: process.env.EMAIL,
         to: results[0].email,
         subject: "Password by Cafe Management System.",
         html: `
@@ -173,102 +151,55 @@ router.post("/forgotPassword", (req, res) => {
           <a href="http://localhost:4200/">Click here to login</a></p>
         `,
       };
-      //Send the email
-      transporter.sendMail(mailOptions, (error, info) => {
+
+      transporter.sendMail(mailOptions, (error) => {
         if (error) {
           console.error("Error sending email:", error);
           return res.status(500).json({ message: "Failed to send email." });
         } else {
-          console.log("Email sent:", info.response);
-          return res
-            .status(200)
-            .json({ message: "Password sent successfully to your email." });
-        }
-      });
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.error("Error sending email:", error);
-          return res.status(500).json({ message: "Failed to send email." });
-        } else {
-          console.log("Email sent:", info.response);
-          return res
-            .status(200)
-            .json({ message: "Password sent successfully to your email." });
+          return res.status(200).json({ message: "Password sent successfully to your email." });
         }
       });
     }
   });
 });
+
 // Get Users route
 router.get("/get", async (req, res) => {
   const query =
     "SELECT id, name, email, contactNumber, status FROM user WHERE role = 'user'";
 
   try {
-    console.log("Fetching users..."); // Log when fetching users
-    const [results] = await connection.query(query); // No need for connection.promise() if using promise pool
+    console.log("Fetching users...");
+    const [results] = await connection.all(query);
 
     if (results.length === 0) {
-      // Return an empty array if no users are found
       return res.status(200).json([]);
     }
 
     return res.status(200).json(results);
   } catch (err) {
-    console.error("Database query error:", err); // Log the error details
+    console.error("Database query error:", err);
     return res.status(500).json({
       error: "An error occurred while fetching users.",
-      details: err.message, // Include detailed error message
+      details: err.message,
     });
   }
 });
 
 // Update User Status route
-// router.patch(
-//   "/update",
-//   auth.authenticateToken,
-//   checkRole.checkRole,
-//   async (req, res) => {
-//     const { status, id } = req.body;
-
-//     if (!status || !id) {
-//       return res.status(400).json({ message: "Status and ID are required" });
-//     }
-
-//     try {
-//       const query = "UPDATE user SET status=? WHERE id=?";
-//       const results = await connection.query(query, [status, id]);
-
-//       if (results.affectedRows === 0) {
-//         return res.status(404).json({ message: "User ID does not exist" });
-//       }
-//       res.status(200).json({ message: "User updated successfully" });
-//     } catch (err) {
-//       res.status(500).json({ message: "Database query error", error: err });
-//     }
-//   }
-// );
 router.patch("/update", (req, res) => {
   let user = req.body;
 
-  // Log the incoming request data for debugging
-  console.log("Incoming request data:", user);
-
-  // Ensure id and status are present
   if (!user.id || !user.status) {
     return res.status(400).json({ message: "User ID and status are required" });
   }
 
   var query = "UPDATE user SET status=? WHERE id=?";
-  connection.query(query, [user.status, user.id], (err, results) => {
+  connection.run(query, [user.status, user.id], (err) => {
     if (err) {
-      console.error("Database error:", err); // Log any database errors
+      console.error("Database error:", err);
       return res.status(500).json({ message: "Database error", error: err });
-    }
-
-    // Check if the update affected any rows
-    if (results.affectedRows === 0) {
-      return res.status(404).json({ message: "User ID does not exist" });
     }
 
     return res.status(200).json({ message: "User updated successfully!" });
@@ -293,7 +224,7 @@ router.post("/changePassword", auth.authenticateToken, async (req, res) => {
 
   try {
     const query = "SELECT * FROM user WHERE email=?";
-    const [results] = await connection.query(query, [email]);
+    const [results] = await connection.all(query, [email]);
 
     if (results.length === 0) {
       return res.status(404).json({ message: "User not found" });
@@ -306,11 +237,11 @@ router.post("/changePassword", auth.authenticateToken, async (req, res) => {
 
     const hashedNewPassword = await bcrypt.hash(newPassword, saltRounds);
     const updateQuery = "UPDATE user SET password=? WHERE email=?";
-    await connection.query(updateQuery, [hashedNewPassword, email]);
+    await connection.run(updateQuery, [hashedNewPassword, email]);
 
     res.status(200).json({ message: "Password updated successfully!" });
   } catch (err) {
-    console.error("Error updating password:", err); 
+    console.error("Error updating password:", err);
     res.status(500).json({ message: "Error updating password", error: err });
   }
 });

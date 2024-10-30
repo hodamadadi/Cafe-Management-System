@@ -1,6 +1,10 @@
 // authentication.js
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const crypto = require('crypto');
+// Generate a random 256-bit (32 bytes) secret
+const secret = crypto.randomBytes(32).toString('hex') || process.env.ACCESS_TOKEN_SECRET;
+
 
 function authenticateToken(req, res, next) {
   // Get the authorization header
@@ -14,7 +18,7 @@ function authenticateToken(req, res, next) {
   }
 
   // Verify the token using the secret
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, secret, (err, user) => {
     // If token is invalid, respond with 403 Forbidden
     if (err) {
       return res.status(403).json({ message: "Invalid token" });
@@ -31,7 +35,7 @@ function authenticateToken(req, res, next) {
   });
 }
 
-module.exports = { authenticateToken };
+module.exports = { authenticateToken, secret };
 
 // require("dotenv").config();
 // const jwt = require("jsonwebtoken");
