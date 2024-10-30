@@ -58,12 +58,6 @@ app.use((err, req, res, next) => {
 });
 
 
-app.use((req, res, next) => {
-  res.setHeader("Content-Security-Policy", "connect-src 'self' https://cafe-management-system-r92v.onrender.com");
-  next();
-});
-
-
 app.use(helmet.contentSecurityPolicy({
   directives: {
     defaultSrc: ["'self'"],
